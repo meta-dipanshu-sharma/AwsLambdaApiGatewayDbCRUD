@@ -1,8 +1,0 @@
-{
-    "mysql": {
-      "host": "database-1.cusxldl2fwf5.us-west-1.rds.amazonaws.com",
-      "user": "admin",
-      "password": "Dipanshu#sharma25",
-      "database": "awsdb"
-    }
-  }
