@@ -1,15 +1,9 @@
 const modules = require('./employee')
 
-const Request = require('./lib/request')
-const Response = require('./lib/response')
-
-const index = (event, context, callback) => {
+const index = (event) => {
     const method = event.httpMethod
-
-    const request = new Request(event)
-    const response = new Response()
-
-    return modules[method](request, response)
-        .then(() => callback(null, response))
+    
+    return modules[method](event)
 }
+
 exports.handler = index

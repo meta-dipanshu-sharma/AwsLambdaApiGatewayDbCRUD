@@ -1,23 +1,52 @@
-const sequelizeHelper = require('../lib/sequelize-helper')
-const GET = (request, response) => {
-  const { queryStringParameters } = request.event
-  const id = queryStringParameters && queryStringParameters.id ? queryStringParameters.id : null
-  return sequelizeHelper.getModels()
-    .then(models => {
-      if (id) {
-        response.body = id
-        return models.employee.findOne({ where: { id }, attributes: ['id', 'firstName', 'lastName'] })
-      }
-      else {
-        return models.employee.findAll({ attributes: ['id', 'firstName', 'lastName'] })
-      }
+const mysql = require('mysql')
+const connection = mysql.createConnection({
+    host: 'database-1.cusxldl2fwf5.us-west-1.rds.amazonaws.com',
+    user: 'admin',
+    password: 'Dipanshu#sharma25',
+    port: 3306,
+    database: "awsdb",
+    multipleStatements: true,
+    connectionLimit: 1000,
+    connectTimeout: 60 * 60 * 60 * 1000,
+    acquireTimeout: 60 * 60 * 60 * 1000,
+    timeout: 60 * 60 * 60 * 1000,
+    debug: true
+})
 
-    })
-    .then(result => {
-      response.body = JSON.stringify(result)
-      response.statusCode = 200
-      return response
-    })
+const GET = async (event) => {
+    try {
+        const { queryStringParameters } = event
+        const id = queryStringParameters && queryStringParameters.id ? queryStringParameters.id : null
+
+        const data = await new Promise((resolve, reject) => {
+            let queryToRun = 'select * from employee'
+
+            if (id) {
+                queryToRun = `select * from employee where id=${id}`
+            }
+
+            connection.query(queryToRun,
+                function (err, result) {
+                    if (err) {
+                        console.log("Error->" + err)
+                        reject(err)
+                    }
+
+                    resolve(result)
+                })
+        })
+        return {
+            statusCode: 200,
+            body: JSON.stringify(data)
+        }
+
+    }
+    catch (err) {
+        return {
+            statusCode: 400,
+            body: err.message
+        }
+    }
 }
 
 module.exports = { GET }

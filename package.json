@@ -1,16 +1,15 @@
 {
-  "name": "getpostfunc",
+  "name": "employee-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Dipanshu Sharma",
+  "author": "dipanshu-sharma",
   "license": "ISC",
   "dependencies": {
-    "mysql2": "^2.1.0",
-    "q": "^1.5.1",
-    "sequelize": "^5.21.13"
+    "mysql": "^2.18.1",
+    "q": "^1.5.1"
   }
 }
